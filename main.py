@@ -12,7 +12,7 @@ def main():
     run = True
     clock = pygame.time.Clock()
     board = Board()
-    piece = Piece(0, 0, WHITE)
+    board.create_pieces()
 
     while run:
         clock.tick(FPS)
@@ -22,7 +22,7 @@ def main():
                 run = False
     
         board.draw_squares(win)
-        piece.draw(win)
+        board.draw_pieces(win)
         pygame.display.update()
     
     pygame.quit()
