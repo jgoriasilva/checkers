@@ -4,7 +4,7 @@ from .constants import BLACK, RED, ROWS, SQUARE_SIZE
 
 class Board():
 
-    def draw_squares(self, win: pygame.display):
+    def draw_squares(self, win: pygame.Surface):
         win.fill(BLACK)
         for row in range(ROWS):
             for col in range(row%2, 8, 2):

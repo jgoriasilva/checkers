@@ -4,6 +4,7 @@ import pygame
 HEIGHT, WIDTH = 800, 800
 ROWS, COLS = 8, 8
 SQUARE_SIZE = HEIGHT//ROWS
+PIECE_RADIUS = SQUARE_SIZE//2 - 10
 
 # rgb
 RED = (255, 0, 0)
