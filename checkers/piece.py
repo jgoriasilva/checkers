@@ -1,5 +1,5 @@
 import pygame
-from .constants import PIECE_RADIUS, WHITE, RED, SQUARE_SIZE 
+from .constants import PIECE_RADIUS, WHITE, RED, SQUARE_SIZE , CROWN
 
 class Piece():
 
@@ -10,5 +10,9 @@ class Piece():
 
         self.color = color
 
+        self.king = False
+
     def draw(self, win: pygame.Surface):
         pygame.draw.circle(win, self.color, (self.x, self.y), PIECE_RADIUS)
+        if self.king:
+            win.blit(CROWN, (self.x - CROWN.get_width()//2, self.y - CROWN.get_height()//2))
