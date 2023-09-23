@@ -1,5 +1,5 @@
 import pygame
-from .constants import PIECE_RADIUS, WHITE, RED, SQUARE_SIZE , CROWN
+from .constants import PIECE_RADIUS, WHITE, RED, SQUARE_SIZE , CROWN, ROWS
 
 class Piece():
 
@@ -7,7 +7,6 @@ class Piece():
 
         self.row = row
         self.col = col
-
         self.color = color
 
         self.king = False
@@ -22,6 +21,9 @@ class Piece():
         self.row = row
         self.col = col
         self.calc_pos()
+
+        if row == 0 or row == ROWS and not self.king:
+            self.king = True
 
     def draw(self, win: pygame.Surface):
         pygame.draw.circle(win, self.color, (self.x, self.y), PIECE_RADIUS)
