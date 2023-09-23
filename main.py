@@ -14,6 +14,9 @@ def main():
     board = Board()
     board.create_pieces()
 
+    piece = board.get_piece(0,1)
+    board.move_piece(piece, 4, 3)
+
     while run:
         clock.tick(FPS)
 

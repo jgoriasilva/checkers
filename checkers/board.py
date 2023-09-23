@@ -34,3 +34,10 @@ class Board():
                 piece = self.board[row][col]
                 if piece:
                     piece.draw(win)
+
+    def move_piece(self, piece, row, col):
+        self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
+        piece.move(row, col)
+
+    def get_piece(self, row, col):
+        return self.board[row][col]

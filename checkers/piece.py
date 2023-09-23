@@ -5,12 +5,23 @@ class Piece():
 
     def __init__(self, row, col, color):
 
-        self.x = col*SQUARE_SIZE + SQUARE_SIZE//2
-        self.y = row*SQUARE_SIZE + SQUARE_SIZE//2
+        self.row = row
+        self.col = col
 
         self.color = color
 
         self.king = False
+
+        self.calc_pos()
+
+    def calc_pos(self):
+        self.x = self.col*SQUARE_SIZE + SQUARE_SIZE//2
+        self.y = self.row*SQUARE_SIZE + SQUARE_SIZE//2
+
+    def move(self, row, col):
+        self.row = row
+        self.col = col
+        self.calc_pos()
 
     def draw(self, win: pygame.Surface):
         pygame.draw.circle(win, self.color, (self.x, self.y), PIECE_RADIUS)
