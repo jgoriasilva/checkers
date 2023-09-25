@@ -39,10 +39,10 @@ class Game():
 
     def __explore(self, row, col, color, direction, side, moves, skipped, skipping=False):
         target_row, target_col = row + direction, col + side
-
+        
+        if skipping:
+            moves.update({(row, col): skipped})
         if not 0 <= target_row <= 7 or not 0 <= target_col <= 7:
-            if skipping:
-                moves.update({(row, col): skipped})
             return moves
 
         target_piece = self.board.get_piece(target_row, target_col)
