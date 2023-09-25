@@ -58,3 +58,7 @@ class Board():
 
     def get_piece(self, row, col) -> Piece:
         return self.board[row][col]
+
+    def remove_piece(self, pieces: Piece):
+        for row, col in pieces:
+            self.board[row][col] = None

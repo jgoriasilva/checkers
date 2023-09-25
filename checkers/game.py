@@ -91,9 +91,13 @@ class Game():
 
     def __move(self, target_row, target_col):
         
+        target_move = (target_row, target_col)
         target = self.board.get_piece(target_row, target_col)
-        if self.selected is not None and target is None and (target_row, target_col) in self.board.valid_moves:
+        if self.selected is not None and target is None and target_move in self.board.valid_moves:
             self.board.move_piece(self.selected, target_row, target_col)
+            skipped = self.board.valid_moves[target_move]
+            if len(skipped):
+                self.board.remove_piece(skipped)
             self.change_turn()
             self.selected = None
         else:
