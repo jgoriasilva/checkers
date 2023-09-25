@@ -67,7 +67,7 @@ class Game():
         else:
             if target_piece is None:
                 moves.update({(row, col): skipped})
-            else:
+            elif target_piece.color != color:
                 destination = self.board.get_piece(target_row+direction, target_col+side)
                 if destination is not None:
                     return moves
