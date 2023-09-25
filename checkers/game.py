@@ -12,6 +12,7 @@ class Game():
     def update(self):
         self.board.draw_squares(self.win)
         self.board.draw_pieces(self.win)
+        self.board.draw_valid_moves(self.win)
 
     def valid_moves(self, piece: Piece):
         moves = {}
@@ -24,7 +25,7 @@ class Game():
 
         return moves
 
-    def __explore(self, row, col, color, side, moves, skipped):
+    def __explore(self, row, col, color, side, moves, skipped, skipping=False):
         direction = 1 if color == WHITE else -1
         target_row, target_col = row + direction, col + side
 
@@ -34,9 +35,10 @@ class Game():
         target_piece = self.board.get_piece(target_row, target_col)
         if target_piece == None:
             moves.update({(target_row, target_col): skipped})
-        elif target_piece.color != color:
-            moves.update(self.__explore(target_row, target_col, color, -1, moves, skipped.append(target_piece)))
-            moves.update(self.__explore(target_row, target_col, color, +1, moves, skipped.append(target_piece)))
+        elif target_piece.color != color and not skipping:
+            skipped.append(target_piece)
+            moves.update(self.__explore(target_row, target_col, color, side, moves, skipped, True))
+            # moves.update(self.__explore(target_row, target_col, color, +1, moves, skipped.append(target_piece)))
 
         return moves
 
