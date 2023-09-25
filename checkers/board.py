@@ -20,7 +20,7 @@ class Board():
         self.board = [[None for _ in range(COLS)] for _ in range(ROWS)]
         self.board[1][2] = Piece(1, 2, WHITE)
         self.board[2][3] = Piece(2, 3, RED)
-        self.board[3][4] = Piece(3, 4, RED)
+        self.board[4][3] = Piece(4, 3, RED)
         pass
 
     def create_pieces(self):

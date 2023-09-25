@@ -32,6 +32,7 @@ def main():
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
                 game.board.valid_moves = game.valid_moves(game.select_piece(row,col))
+                print(game.board.valid_moves)
     
         game.update()
         pygame.display.update()
