@@ -18,15 +18,22 @@ class Game():
         moves = {}
         if piece is None:
             return moves
-        row, col, color = piece.row, piece.col, piece.color
+        row, col, color, king = piece.row, piece.col, piece.color, piece.king
 
-        moves.update(self.__explore(row, col, color, -1, moves, []))
-        moves.update(self.__explore(row, col, color, +1, moves, []))
+        if king:
+            moves.update(self.__explore(row, col, color, -1, -1, moves, []))
+            moves.update(self.__explore(row, col, color, -1, +1, moves, []))
+            moves.update(self.__explore(row, col, color, +1, -1, moves, []))
+            moves.update(self.__explore(row, col, color, +1, +1, moves, []))
+            
+        else:
+            direction = +1 if color == WHITE else -1
+            moves.update(self.__explore(row, col, color, direction, -1, moves, []))
+            moves.update(self.__explore(row, col, color, direction, +1, moves, []))
 
         return moves
 
-    def __explore(self, row, col, color, side, moves, skipped, skipping=False):
-        direction = 1 if color == WHITE else -1
+    def __explore(self, row, col, color, direction, side, moves, skipped, skipping=False):
         target_row, target_col = row + direction, col + side
 
         if not 0 <= target_row <= 7 or not 0 <= target_col <= 7:
@@ -45,8 +52,8 @@ class Game():
                     return moves
                 else:
                     new_skipped = skipped + [(target_row, target_col)]
-                    moves.update(self.__explore(target_row+direction, target_col+side, color, -1, moves, new_skipped, True))
-                    moves.update(self.__explore(target_row+direction, target_col+side, color, +1, moves, new_skipped, True))
+                    moves.update(self.__explore(target_row+direction, target_col+side, color, direction, -1, moves, new_skipped, True))
+                    moves.update(self.__explore(target_row+direction, target_col+side, color, direction, +1, moves, new_skipped, True))
         
         else:
             if target_piece is None:
@@ -57,35 +64,8 @@ class Game():
                     return moves
                 else:
                     new_skipped = skipped + [(target_row, target_col)]
-                    moves.update(self.__explore(target_row+direction, target_col+side, color, -1, moves, new_skipped, True))
-                    moves.update(self.__explore(target_row+direction, target_col+side, color, +1, moves, new_skipped, True))
-
-
-
-
-        # if skipping:
-        #     if target_piece == None:
-        #         moves.update({(row,col):skipped})
-        #     elif target_piece.color != color:
-        #         destination = self.board.get_piece(target_row+direction, target_col+side)
-        #         if destination == None:
-        #             skipped.append(target_piece)
-        #             moves.update(self.__explore(target_row+direction, target_col+side, color, side, moves, skipped, True))
-        #         else:
-        #             pass
-
-        # else:
-        #     if target_piece == None:
-        #         moves.update({(target_row, target_col): skipped})
-        #     elif target_piece.color != color:
-        #         destination = self.board.get_piece(target_row+direction, target_col+side)
-        #         if destination == None:
-        #             moves.update({(row,col):skipped})
-        #             skipped.append(target_piece)
-        #             moves.update(self.__explore(target_row+direction, target_col-1, color, side, moves, skipped, True))
-        #             moves.update(self.__explore(target_row+direction, target_col+1, color, side, moves, skipped, True))
-        #         else:
-        #             pass
+                    moves.update(self.__explore(target_row+direction, target_col+side, color, direction, -1, moves, new_skipped, True))
+                    moves.update(self.__explore(target_row+direction, target_col+side, color, direction, +1, moves, new_skipped, True))
 
         return moves
 

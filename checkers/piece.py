@@ -3,13 +3,12 @@ from .constants import PIECE_RADIUS, WHITE, RED, SQUARE_SIZE , CROWN, ROWS
 
 class Piece():
 
-    def __init__(self, row, col, color):
+    def __init__(self, row, col, color, king=False):
 
         self.row = row
         self.col = col
         self.color = color
-
-        self.king = False
+        self.king = king
 
         self.calc_pos()
 
@@ -20,6 +19,9 @@ class Piece():
     def calc_pos(self):
         self.x = self.col*SQUARE_SIZE + SQUARE_SIZE//2
         self.y = self.row*SQUARE_SIZE + SQUARE_SIZE//2
+
+    def make_king(self):
+        self.king = True
 
     def move(self, row, col):
         self.row = row
