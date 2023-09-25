@@ -1,5 +1,5 @@
 import pygame
-from .constants import PIECE_RADIUS, WHITE, RED, SQUARE_SIZE , CROWN, ROWS
+from .constants import *
 
 class Piece():
 
@@ -17,8 +17,7 @@ class Piece():
         return f"Piece({row},{col})"
 
     def calc_pos(self):
-        self.x = self.col*SQUARE_SIZE + SQUARE_SIZE//2
-        self.y = self.row*SQUARE_SIZE + SQUARE_SIZE//2
+        self.x, self.y = calc_xy(self.row, self.col)
 
     def make_king(self):
         self.king = True

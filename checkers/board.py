@@ -1,6 +1,6 @@
 from sqlite3 import SQLITE_IGNORE
 import pygame
-from .constants import BLACK, RED, WHITE, ROWS, COLS, SQUARE_SIZE, PIECE_RADIUS, BLUE
+from .constants import *
 from .piece import Piece
 
 class Board():
@@ -62,3 +62,10 @@ class Board():
     def remove_piece(self, pieces: Piece):
         for row, col in pieces:
             self.board[row][col] = None
+
+    def draw_selected(self, win, selected):
+
+        row, col = selected.row, selected.col
+        x, y = calc_xy(row, col)
+
+        pygame.draw.circle(win, GREY, (x, y), PIECE_RADIUS*0.3)

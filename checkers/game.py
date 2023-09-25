@@ -13,10 +13,15 @@ class Game():
         self.turn = RED
     
     def update(self):
-        self.board.draw_squares(self.win)
-        self.board.draw_pieces(self.win)
-        if self.selected:
-            self.board.draw_valid_moves(self.win)
+        win = self.win
+        selected = self.selected
+
+        self.board.draw_squares(win)
+        self.board.draw_pieces(win)
+
+        if selected:
+            self.board.draw_valid_moves(win)
+            self.board.draw_selected(win, selected)
 
     def valid_moves(self, piece: Piece):
         moves = {}
@@ -39,7 +44,7 @@ class Game():
 
     def __explore(self, row, col, color, direction, side, moves, skipped, skipping=False):
         target_row, target_col = row + direction, col + side
-        
+
         if skipping:
             moves.update({(row, col): skipped})
         if not 0 <= target_row <= 7 or not 0 <= target_col <= 7:
