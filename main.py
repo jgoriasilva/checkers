@@ -31,6 +31,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 row, col = get_row_col_from_mouse(pos)
+                print(game.valid_moves(game.select_piece(row, col)))
     
         game.update()
         pygame.display.update()

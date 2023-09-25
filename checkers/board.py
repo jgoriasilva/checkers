@@ -40,5 +40,5 @@ class Board():
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
 
-    def get_piece(self, row, col):
+    def get_piece(self, row, col) -> Piece:
         return self.board[row][col]
