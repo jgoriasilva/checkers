@@ -57,6 +57,8 @@ class Board():
         piece.move(row, col)
 
     def get_piece(self, row, col) -> Piece:
+        if not 0 <= row < ROWS or not 0 <= col < COLS:
+            return None
         return self.board[row][col]
 
     def remove_piece(self, pieces: Piece):
