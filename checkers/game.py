@@ -1,3 +1,4 @@
+from xmlrpc.client import Boolean
 import pygame
 from .board import Board
 from .piece import Piece
@@ -8,6 +9,8 @@ class Game():
     def __init__(self, win):
         self.win = win
         self.board = Board()
+        self.selected = None
+        self.turn = RED
     
     def update(self):
         self.board.draw_squares(self.win)
@@ -69,5 +72,29 @@ class Game():
 
         return moves
 
-    def select_piece(self, row, col):
-        return self.board.get_piece(row, col)
+    def change_turn(self):
+        self.turn = WHITE if self.turn == RED else RED
+
+    def select(self, row, col):
+        if self.selected is not None:
+            result = self.__move(row, col)
+            if not result:
+                self.selected = None
+                self.select(row, col)
+        else:
+            piece = self.board.get_piece(row, col)
+            if piece is not None and piece.color == self.turn:
+                self.selected = piece
+                self.board.valid_moves = self.valid_moves(piece)
+
+
+    def __move(self, target_row, target_col):
+        
+        target = self.board.get_piece(target_row, target_col)
+        if self.selected is not None and target is None and (target_row, target_col) in self.board.valid_moves:
+            self.board.move_piece(self.selected, target_row, target_col)
+            self.change_turn()
+        else:
+            return False
+
+        return True

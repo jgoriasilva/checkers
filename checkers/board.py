@@ -8,7 +8,7 @@ class Board():
     def __init__(self):
         self.board = []
         self.valid_moves = {}
-        self.create_pieces_2()
+        self.create_pieces()
 
     def draw_squares(self, win: pygame.Surface):
         win.fill(BLACK)
