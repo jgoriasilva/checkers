@@ -15,7 +15,8 @@ class Game():
     def update(self):
         self.board.draw_squares(self.win)
         self.board.draw_pieces(self.win)
-        self.board.draw_valid_moves(self.win)
+        if self.selected:
+            self.board.draw_valid_moves(self.win)
 
     def valid_moves(self, piece: Piece):
         moves = {}
@@ -94,6 +95,7 @@ class Game():
         if self.selected is not None and target is None and (target_row, target_col) in self.board.valid_moves:
             self.board.move_piece(self.selected, target_row, target_col)
             self.change_turn()
+            self.selected = None
         else:
             return False
 
