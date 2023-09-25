@@ -13,6 +13,10 @@ class Piece():
 
         self.calc_pos()
 
+    def __repr__(self):
+        row, col = self.row, self.col
+        return f"Piece({row},{col})"
+
     def calc_pos(self):
         self.x = self.col*SQUARE_SIZE + SQUARE_SIZE//2
         self.y = self.row*SQUARE_SIZE + SQUARE_SIZE//2
