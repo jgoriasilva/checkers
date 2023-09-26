@@ -6,8 +6,12 @@ from .piece import Piece
 class Board():
 
     def __init__(self):
+        self.__init()
+
+    def __init(self):
         self.board = []
         self.valid_moves = {}
+        self.count = {WHITE: 0, RED: 0}
         self.create_pieces()
 
     def draw_squares(self, win: pygame.Surface):
@@ -22,6 +26,8 @@ class Board():
         self.board[2][3] = Piece(2, 3, RED)
         self.board[4][3] = Piece(4, 3, RED)
         self.board[5][2] = Piece(5, 2, WHITE, True)
+        self.count[RED] = 2
+        self.count[WHITE] = 1
         pass
 
     def create_pieces(self):
@@ -31,8 +37,10 @@ class Board():
                 if col%2 == (row + 1)%2:
                     if row < 3:
                         self.board[row].append(Piece(row, col, WHITE))
+                        self.count[WHITE] += 1
                     elif row > 4:
                         self.board[row].append(Piece(row, col, RED))
+                        self.count[RED] += 1
                     else:
                         self.board[row].append(None)
                 else:
@@ -61,8 +69,9 @@ class Board():
             return None
         return self.board[row][col]
 
-    def remove_piece(self, pieces: Piece):
-        for row, col in pieces:
+    def remove_piece(self, pieces):
+        for row, col, color in pieces:
+            self.count[color] -= 1
             self.board[row][col] = None
 
     def draw_selected(self, win, selected):
@@ -71,3 +80,6 @@ class Board():
         x, y = calc_xy(row, col)
 
         pygame.draw.circle(win, GREY, (x, y), PIECE_RADIUS*0.3)
+
+    def reset(self):
+        self.__init()

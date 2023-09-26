@@ -2,7 +2,7 @@ from xmlrpc.client import Boolean
 import pygame
 from .board import Board
 from .piece import Piece
-from .constants import WHITE, RED
+from .constants import *
 
 class Game():
 
@@ -22,6 +22,13 @@ class Game():
         if selected:
             self.board.draw_valid_moves(win)
             self.board.draw_selected(win, selected)
+
+        game_over, winner = self.is_game_over()
+        if game_over:
+            # text= f'Game over. Winner: {winner}'
+            # # prompt
+            # self.show_popup(text)
+            pass
 
     def valid_moves(self, piece: Piece):
         moves = {}
@@ -60,7 +67,8 @@ class Game():
                 if destination is not None:
                     return moves
                 else:
-                    new_skipped = skipped + [(target_row, target_col)]
+                    skipped_color = WHITE if color == RED else RED
+                    new_skipped = skipped + [(target_row, target_col, skipped_color)]
                     moves.update(self.__explore(target_row+direction, target_col+side, color, direction, -1, moves, new_skipped, True))
                     moves.update(self.__explore(target_row+direction, target_col+side, color, direction, +1, moves, new_skipped, True))
         
@@ -72,7 +80,8 @@ class Game():
                 if destination is not None:
                     return moves
                 else:
-                    new_skipped = skipped + [(target_row, target_col)]
+                    skipped_color = WHITE if color == RED else RED
+                    new_skipped = skipped + [(target_row, target_col, skipped_color)]
                     moves.update(self.__explore(target_row+direction, target_col+side, color, direction, -1, moves, new_skipped, True))
                     moves.update(self.__explore(target_row+direction, target_col+side, color, direction, +1, moves, new_skipped, True))
 
@@ -109,3 +118,26 @@ class Game():
             return False
 
         return True
+
+    def is_game_over(self):
+        if self.board.count[WHITE] <= 0:
+            return True, RED
+        if self.board.count[RED] <= 0:
+            return True, WHITE
+
+        return False, None
+
+    def reset_game(self):
+        self.board.reset()
+        self.selected = None
+        self.turn = RED
+
+    def show_popup(self, text):
+        win = self.win
+        font = pygame.font.SysFont(None, 30)
+        text = font.render(text, True, WHITE)
+        rect = text.get_rect()
+        rect.center = (WIDTH/2, HEIGHT/2)
+
+        pygame.draw.rect(win, BLACK, (100, 100, 200, 100))
+        win.blit(text, rect)
