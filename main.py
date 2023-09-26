@@ -24,6 +24,11 @@ def main():
     while run:
         clock.tick(FPS)
 
+        game_over, winner = game.is_game_over()
+        if game_over:
+            print(f"Game over. Winner: {winner}")
+            run = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False

@@ -23,13 +23,6 @@ class Game():
             self.board.draw_valid_moves(win)
             self.board.draw_selected(win, selected)
 
-        game_over, winner = self.is_game_over()
-        if game_over:
-            # text= f'Game over. Winner: {winner}'
-            # # prompt
-            # self.show_popup(text)
-            pass
-
     def valid_moves(self, piece: Piece):
         moves = {}
         if piece is None:
@@ -121,9 +114,9 @@ class Game():
 
     def is_game_over(self):
         if self.board.count[WHITE] <= 0:
-            return True, RED
+            return True, "red"
         if self.board.count[RED] <= 0:
-            return True, WHITE
+            return True, "white"
 
         return False, None
 

@@ -12,7 +12,7 @@ class Board():
         self.board = []
         self.valid_moves = {}
         self.count = {WHITE: 0, RED: 0}
-        self.create_pieces()
+        self.create_pieces_2()
 
     def draw_squares(self, win: pygame.Surface):
         win.fill(BLACK)
@@ -58,7 +58,7 @@ class Board():
             row, col = move
             x = col*SQUARE_SIZE + SQUARE_SIZE//2
             y = row*SQUARE_SIZE + SQUARE_SIZE//2
-            pygame.draw.circle(win, BLUE, (x, y), PIECE_RADIUS*0.8)
+            pygame.draw.circle(win, BLUE, (x, y), PIECE_RADIUS*0.5)
 
     def move_piece(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
