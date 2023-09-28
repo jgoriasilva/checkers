@@ -111,3 +111,71 @@ class Board():
         pieces = [piece for row in board for piece in row if piece and piece.color == color]
 
         return pieces
+
+    def get_valid_moves(self, piece: Piece):
+        moves = {}
+        if piece is None:
+            return moves
+        row, col, color, king = piece.row, piece.col, piece.color, piece.king
+
+        if king:
+            moves.update(self.__explore(row, col, color, -1, -1, moves, []))
+            moves.update(self.__explore(row, col, color, -1, +1, moves, []))
+            moves.update(self.__explore(row, col, color, +1, -1, moves, []))
+            moves.update(self.__explore(row, col, color, +1, +1, moves, []))
+            
+        else:
+            direction = +1 if color == WHITE else -1
+            moves.update(self.__explore(row, col, color, direction, -1, moves, []))
+            moves.update(self.__explore(row, col, color, direction, +1, moves, []))
+
+        return moves
+
+    def __explore(self, row, col, color, direction, side, moves, skipped, skipping=False):
+        target_row, target_col = row + direction, col + side
+
+        if skipping:
+            moves.update({(row, col): skipped})
+        if not 0 <= target_row <= 7 or not 0 <= target_col <= 7:
+            return moves
+
+        target_piece = self.get_piece(target_row, target_col)
+
+        if not skipping:
+            if target_piece is None:
+                moves.update({(target_row, target_col): skipped})
+            elif target_piece.color != color:
+                destination = self.get_piece(target_row+direction, target_col+side)
+                if destination is not None:
+                    return moves
+                else:
+                    skipped_piece = self.get_piece(target_row, target_col)
+                    new_skipped = skipped + [skipped_piece]
+                    moves.update(self.__explore(target_row+direction, target_col+side, color, direction, -1, moves, new_skipped, True))
+                    moves.update(self.__explore(target_row+direction, target_col+side, color, direction, +1, moves, new_skipped, True))
+        
+        else:
+            if target_piece is None:
+                moves.update({(row, col): skipped})
+            elif target_piece.color != color:
+                destination = self.get_piece(target_row+direction, target_col+side)
+                if destination is not None:
+                    return moves
+                else:
+                    skipped_piece = self.get_piece(target_row, target_col)
+                    new_skipped = skipped + [skipped_piece]
+                    moves.update(self.__explore(target_row+direction, target_col+side, color, direction, -1, moves, new_skipped, True))
+                    moves.update(self.__explore(target_row+direction, target_col+side, color, direction, +1, moves, new_skipped, True))
+
+        return moves
+
+    def get_all_moves(self, player):
+        pieces = self.get_color_pieces(player)
+
+        moves = {}
+        for piece in pieces:
+            move = self.valid_moves(piece)
+            if move:
+                moves[piece] = move
+
+        return moves
