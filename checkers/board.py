@@ -91,3 +91,18 @@ class Board():
 
     def reset(self):
         self.__init()
+
+    def evaluate(self):
+        score_count = self.count[WHITE] - self.count[RED]
+        score_kings = (self.count_kings[WHITE] - self.count_kings[RED]) * KING_SCORE
+
+        board_score = score_count + score_kings
+
+        return board_score
+
+    def get_color_pieces(self, color):
+
+        board = self.board
+        pieces = [piece for row in board for piece in row if piece and piece.color == color]
+
+        return pieces
