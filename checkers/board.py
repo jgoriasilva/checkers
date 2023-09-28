@@ -12,6 +12,8 @@ class Board():
         self.board = []
         self.valid_moves = {}
         self.count = {WHITE: 0, RED: 0}
+        self.count_kings = {WHITE: 0, RED: 0}
+        # self.create_pieces_2()
         self.create_pieces()
 
     def draw_squares(self, win: pygame.Surface):
@@ -63,6 +65,9 @@ class Board():
     def move_piece(self, piece, row, col):
         self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
         piece.move(row, col)
+        if row == 0 or row == ROWS-1 and not piece.king:
+            piece.make_king()
+            self.count_kings[piece.color] += 1
 
     def get_piece(self, row, col) -> Piece:
         if not 0 <= row < ROWS or not 0 <= col < COLS:
@@ -70,9 +75,12 @@ class Board():
         return self.board[row][col]
 
     def remove_piece(self, pieces):
-        for row, col, color in pieces:
+        for piece in pieces:
+            row, col, color, king = piece.row, piece.col, piece.color, piece.king
             self.count[color] -= 1
             self.board[row][col] = None
+            if king:
+                self.count_kings[color] -= 1
 
     def draw_selected(self, win, selected):
 

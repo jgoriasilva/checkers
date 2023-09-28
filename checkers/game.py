@@ -60,8 +60,8 @@ class Game():
                 if destination is not None:
                     return moves
                 else:
-                    skipped_color = WHITE if color == RED else RED
-                    new_skipped = skipped + [(target_row, target_col, skipped_color)]
+                    skipped_piece = self.board.get_piece(target_row, target_col)
+                    new_skipped = skipped + [skipped_piece]
                     moves.update(self.__explore(target_row+direction, target_col+side, color, direction, -1, moves, new_skipped, True))
                     moves.update(self.__explore(target_row+direction, target_col+side, color, direction, +1, moves, new_skipped, True))
         
@@ -73,8 +73,8 @@ class Game():
                 if destination is not None:
                     return moves
                 else:
-                    skipped_color = WHITE if color == RED else RED
-                    new_skipped = skipped + [(target_row, target_col, skipped_color)]
+                    skipped_piece = self.board.get_piece(target_row, target_col)
+                    new_skipped = skipped + [skipped_piece]
                     moves.update(self.__explore(target_row+direction, target_col+side, color, direction, -1, moves, new_skipped, True))
                     moves.update(self.__explore(target_row+direction, target_col+side, color, direction, +1, moves, new_skipped, True))
 

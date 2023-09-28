@@ -27,9 +27,6 @@ class Piece():
         self.col = col
         self.calc_pos()
 
-        if row == 0 or row == ROWS-1 and not self.king:
-            self.make_king()
-
     def draw(self, win: pygame.Surface):
         pygame.draw.circle(win, self.color, (self.x, self.y), PIECE_RADIUS)
         if self.king:
