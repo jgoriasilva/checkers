@@ -62,12 +62,17 @@ class Board():
             y = row*SQUARE_SIZE + SQUARE_SIZE//2
             pygame.draw.circle(win, BLUE, (x, y), PIECE_RADIUS*0.5)
 
-    def move_piece(self, piece, row, col):
-        self.board[piece.row][piece.col], self.board[row][col] = self.board[row][col], self.board[piece.row][piece.col]
-        piece.move(row, col)
-        if row == 0 or row == ROWS-1 and not piece.king:
+    def move_piece(self, piece, target_row, target_col):
+
+        self.board[piece.row][piece.col], self.board[target_row][target_col] = self.board[target_row][target_col], self.board[piece.row][piece.col]
+        piece.move(target_row, target_col)
+        if target_row == 0 or target_row == ROWS-1 and not piece.king:
             piece.make_king()
             self.count_kings[piece.color] += 1
+
+        skipped = self.valid_moves[(target_row, target_col)]
+        if len(skipped):
+            self.remove_piece(skipped)
 
     def get_piece(self, row, col) -> Piece:
         if not 0 <= row < ROWS or not 0 <= col < COLS:

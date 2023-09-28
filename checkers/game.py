@@ -102,9 +102,6 @@ class Game():
         target = self.board.get_piece(target_row, target_col)
         if self.selected is not None and target is None and target_move in self.board.valid_moves:
             self.board.move_piece(self.selected, target_row, target_col)
-            skipped = self.board.valid_moves[target_move]
-            if len(skipped):
-                self.board.remove_piece(skipped)
             self.change_turn()
             self.selected = None
         else:
@@ -134,3 +131,14 @@ class Game():
 
         pygame.draw.rect(win, BLACK, (100, 100, 200, 100))
         win.blit(text, rect)
+
+    def get_all_moves(self, player):
+        pieces = self.board.get_color_pieces(player)
+
+        moves = {}
+        for piece in pieces:
+            move = self.valid_moves(piece)
+            if move:
+                moves[piece] = move
+
+        return moves
