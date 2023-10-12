@@ -133,17 +133,23 @@ class Board():
     def __explore(self, row, col, color, direction, side, moves, skipped, skipping=False):
         target_row, target_col = row + direction, col + side
 
-        if skipping:
+        # if (target_row == 1 and target_col == 8) or (target_row == -1 and target_col == 6):
+        #     print('a')
+
+        if skipping and (0 <= row <= 7 and 0 <= col <= 7):
             moves.update({(row, col): skipped})
+
         if not 0 <= target_row <= 7 or not 0 <= target_col <= 7:
             return moves
-
+        
         target_piece = self.get_piece(target_row, target_col)
 
         if not skipping:
             if target_piece is None:
                 moves.update({(target_row, target_col): skipped})
             elif target_piece.color != color:
+                if not 0 <= target_row+direction <= 7 or not 0 <= target_col+side <= 7:
+                    return moves
                 destination = self.get_piece(target_row+direction, target_col+side)
                 if destination is not None:
                     return moves
@@ -157,6 +163,8 @@ class Board():
             if target_piece is None:
                 moves.update({(row, col): skipped})
             elif target_piece.color != color:
+                if not 0 <= target_row+direction <= 7 or not 0 <= target_col+side <= 7:
+                    return moves
                 destination = self.get_piece(target_row+direction, target_col+side)
                 if destination is not None:
                     return moves
