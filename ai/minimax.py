@@ -64,6 +64,10 @@ def algorithm(board: Board, player=WHITE, depth=4):
         moves_dict = board.get_all_moves(player)
 
         best_score = float('-inf')
+
+        if len(moves_dict) == 0:
+            return best_score, board
+
         for piece in moves_dict:
             for move in moves_dict[piece]:
                 simulate_board = simulate(board, piece, move)
@@ -80,6 +84,10 @@ def algorithm(board: Board, player=WHITE, depth=4):
         best_move = None
 
         best_score = float('inf')
+
+        if len(moves_dict) == 0:
+            return best_score, board
+
         for piece in moves_dict:
             for move in moves_dict[piece]:
                 simulate_board = simulate(board, piece, move)
