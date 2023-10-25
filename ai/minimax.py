@@ -56,10 +56,10 @@ def is_best_score(score, best_score, player):
     else: # min
         return score < best_score
 
-def algorithm(board: Board, player=WHITE, depth=4):
+def algorithm(board: Board, alpha=float('-inf'), beta=float('inf'), player=WHITE, depth=4):
     if depth == 0:
         return board.evaluate(), board
-    
+
     if player == WHITE: # max
         moves_dict = board.get_all_moves(player)
 
@@ -71,10 +71,13 @@ def algorithm(board: Board, player=WHITE, depth=4):
         for piece in moves_dict:
             for move in moves_dict[piece]:
                 simulate_board = simulate(board, piece, move)
-                score, _ = algorithm(simulate_board, RED, depth-1)
+                score, _ = algorithm(simulate_board, alpha, beta, RED, depth-1)
                 if score > best_score:
                     best_board = simulate_board
                     best_score = score
+                alpha = max(alpha, score)
+                if beta <= alpha:
+                    break
         
 
         return best_score, best_board
@@ -91,9 +94,12 @@ def algorithm(board: Board, player=WHITE, depth=4):
         for piece in moves_dict:
             for move in moves_dict[piece]:
                 simulate_board = simulate(board, piece, move)
-                score, _ = algorithm(simulate_board, WHITE, depth-1)
+                score, _ = algorithm(simulate_board, alpha, beta, WHITE, depth-1)
                 if score < best_score:
                     best_board = simulate_board
                     best_score = score
+                beta = min(beta, score)
+                if beta <= alpha:
+                    break
         
         return best_score, best_board
