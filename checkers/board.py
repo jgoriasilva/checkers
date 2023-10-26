@@ -96,11 +96,27 @@ class Board():
     def reset(self):
         self.__init()
 
+    def evaluate_position_pieces(self, color):
+        board = self.board
+        pieces = [piece for row in board for piece in row if piece and piece.color == color]
+        score = 0
+
+        for piece in pieces:
+            if piece.king:
+                continue
+            if color == WHITE:
+                score += piece.row
+            elif color == RED:
+                score += abs(piece.row-7)
+
+        return score
+
     def evaluate(self):
         score_count = self.count[WHITE] - self.count[RED]
         score_kings = (self.count_kings[WHITE] - self.count_kings[RED]) * KING_SCORE
+        score_position = self.evaluate_position_pieces(WHITE) - self.evaluate_position_pieces(RED)
 
-        board_score = score_count + score_kings
+        board_score = score_count + score_kings + score_position
 
         return board_score
 
