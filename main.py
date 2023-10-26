@@ -31,14 +31,14 @@ def main():
             run = False
             
         if game.turn == WHITE:
-            score, board = ai.algorithm(game.board, player=WHITE, depth=2)
+            score, board = ai.algorithm(game.board, player=WHITE, depth=4)
             game.board = board
             game.change_turn()
 
-        # if game.turn == RED:
-        #     score, board = ai.algorithm(game.board, player=RED, depth=6)
-        #     game.board = board
-        #     game.change_turn()
+        if game.turn == RED:
+            score, board = ai.algorithm(game.board, player=RED, depth=4)
+            game.board = board
+            game.change_turn()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

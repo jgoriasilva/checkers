@@ -31,7 +31,7 @@ from queue import SimpleQueue
 from checkers.game import Game
 from checkers.board import Board
 from checkers.piece import Piece
-from checkers.constants import WHITE, RED
+from checkers.constants import WHITE, RED, shuffle_dict
 
 def simulate(board: Board, piece, move):
 
@@ -62,6 +62,7 @@ def algorithm(board: Board, alpha=float('-inf'), beta=float('inf'), player=WHITE
 
     if player == WHITE: # max
         moves_dict = board.get_all_moves(player)
+        moves_dict = shuffle_dict(moves_dict)
 
         best_score = float('-inf')
 
@@ -84,7 +85,7 @@ def algorithm(board: Board, alpha=float('-inf'), beta=float('inf'), player=WHITE
 
     else: # min
         moves_dict = board.get_all_moves(player)
-        best_move = None
+        moves_dict = shuffle_dict(moves_dict)
 
         best_score = float('inf')
 

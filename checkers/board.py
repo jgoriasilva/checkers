@@ -103,7 +103,7 @@ class Board():
 
         for piece in pieces:
             if piece.king:
-                continue
+                score += 7
             if color == WHITE:
                 score += piece.row
             elif color == RED:

@@ -1,4 +1,5 @@
 import pygame
+import random
 
 # board
 HEIGHT, WIDTH = 800, 800
@@ -22,3 +23,17 @@ def calc_xy(row, col):
     y = row*SQUARE_SIZE + SQUARE_SIZE//2
 
     return x, y
+
+def shuffle_dict(d):
+    shuffled_dict = {}
+
+    keys_list = list(d.keys())
+    random.shuffle(keys_list)
+
+    for key in keys_list:
+        v = d[key]
+        if type(v) is not list:
+            v = shuffle_dict(v)
+        shuffled_dict[key] = v
+
+    return shuffled_dict
