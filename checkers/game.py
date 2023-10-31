@@ -54,12 +54,7 @@ class Game():
         return True
 
     def is_game_over(self):
-        if self.board.count[WHITE] <= 0:
-            return True, "red"
-        if self.board.count[RED] <= 0:
-            return True, "white"
-
-        return False, None
+        return self.board.is_board_over()
 
     def reset_game(self):
         self.board.reset()

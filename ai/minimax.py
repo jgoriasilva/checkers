@@ -57,7 +57,7 @@ def is_best_score(score, best_score, player):
         return score < best_score
 
 def algorithm(board: Board, alpha=float('-inf'), beta=float('inf'), player=WHITE, depth=4):
-    if depth == 0:
+    if depth == 0 or board.is_board_over()[0]:
         return board.evaluate(), board
 
     if player == WHITE: # max

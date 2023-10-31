@@ -103,8 +103,11 @@ class Board():
 
         for piece in pieces:
             if piece.king:
-                score += 7
-            if color == WHITE:
+                if piece.row >= 3.5:
+                    score += 7-piece.row
+                else:
+                    score += piece.row
+            elif color == WHITE:
                 score += piece.row
             elif color == RED:
                 score += abs(piece.row-7)
@@ -112,6 +115,8 @@ class Board():
         return score
 
     def evaluate(self):
+        # TODO add feature to minimize the distance between the two players
+        
         score_count = self.count[WHITE] - self.count[RED]
         score_kings = (self.count_kings[WHITE] - self.count_kings[RED]) * KING_SCORE
         score_position = self.evaluate_position_pieces(WHITE) - self.evaluate_position_pieces(RED)
@@ -202,3 +207,12 @@ class Board():
                 moves[piece] = move
 
         return moves
+
+    def is_board_over(self):
+        
+        if self.count[WHITE] <= 0 or len(self.get_all_moves(WHITE)) == 0:
+            return True, "red"
+        if self.count[RED] <= 0 or len(self.get_all_moves(RED)) == 0:
+            return True, "white"
+
+        return False, None
