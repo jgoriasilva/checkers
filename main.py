@@ -11,11 +11,23 @@ pygame.init()
 win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Checkers')
 
+RED_MOVE = pygame.USEREVENT + 1
+RED_AI = 2
+WHITE_MOVE = pygame.USEREVENT + 2
+WHITE_AI = 3
+
 def get_row_col_from_mouse(pos):
     x, y = pos
     row = y // SQUARE_SIZE
     col = x // SQUARE_SIZE
     return row, col
+
+def check_game_over(game):
+    game_over, winner = game.is_game_over()
+    if game_over:
+        print(f"Game over. Winner: {winner}")
+    
+    return game_over
 
 def main():
     run = True
@@ -25,34 +37,60 @@ def main():
     while run:
         clock.tick(FPS)
 
-        game_over, winner = game.is_game_over()
-        if game_over:
-            print(f"Game over. Winner: {winner}")
-            run = False
+        game.update()
+        pygame.display.update()
             
+        if game.turn==RED:
+            pygame.event.post(pygame.event.Event(RED_MOVE))
+        
         if game.turn == WHITE:
-            score, board = ai.algorithm(game.board, player=WHITE, depth=4)
-            game.board = board
-            game.change_turn()
-
-        if game.turn == RED:
-            score, board = ai.algorithm(game.board, player=RED, depth=4)
-            game.board = board
-            game.change_turn()
+            pygame.event.post(pygame.event.Event(WHITE_MOVE))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                row, col = get_row_col_from_mouse(pos)
-                game.select(row, col)
-    
-        game.update()
-        pygame.display.update()
+            # if event.type == pygame.MOUSEBUTTONDOWN:
+            #     pos = pygame.mouse.get_pos()
+            #     row, col = get_row_col_from_mouse(pos)
+            #     game.select(row, col)
 
-    
+            if event.type == RED_MOVE:
+                if RED_AI:
+                    score, board = ai.algorithm(game.board, player=RED, depth=RED_AI)
+                    game.board = board
+                    game.change_turn()
+                    run = not check_game_over(game)
+                else:
+                    while True:
+                        event = pygame.event.wait()
+                        if event.type == pygame.QUIT:
+                            run = False
+                            break
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            break
+                    pos = pygame.mouse.get_pos()
+                    row, col = get_row_col_from_mouse(pos)
+                    game.select(row, col)
+            
+            if event.type == WHITE_MOVE:
+                if WHITE_AI:
+                    score, board = ai.algorithm(game.board, player=WHITE, depth=WHITE_AI)
+                    game.board = board
+                    game.change_turn()
+                    run = not check_game_over(game)
+                else:
+                    while True:
+                        event = pygame.event.wait()
+                        if event.type == pygame.QUIT:
+                            run = False
+                            break
+                        if event.type == pygame.MOUSEBUTTONDOWN:
+                            break
+                    pos = pygame.mouse.get_pos()
+                    row, col = get_row_col_from_mouse(pos)
+                    game.select(row, col)
+
     pygame.quit()
 
 if __name__ == '__main__':
