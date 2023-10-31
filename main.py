@@ -12,9 +12,9 @@ win = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Checkers')
 
 RED_MOVE = pygame.USEREVENT + 1
-RED_AI = 2
+RED_AI = 1
 WHITE_MOVE = pygame.USEREVENT + 2
-WHITE_AI = 3
+WHITE_AI = 0
 
 def get_row_col_from_mouse(pos):
     x, y = pos
@@ -47,13 +47,9 @@ def main():
             pygame.event.post(pygame.event.Event(WHITE_MOVE))
 
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 run = False
-
-            # if event.type == pygame.MOUSEBUTTONDOWN:
-            #     pos = pygame.mouse.get_pos()
-            #     row, col = get_row_col_from_mouse(pos)
-            #     game.select(row, col)
 
             if event.type == RED_MOVE:
                 if RED_AI:
@@ -71,7 +67,8 @@ def main():
                             break
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
-                    game.select(row, col)
+                    if game.select(row, col):
+                        run = not check_game_over(game)
             
             if event.type == WHITE_MOVE:
                 if WHITE_AI:
@@ -89,7 +86,8 @@ def main():
                             break
                     pos = pygame.mouse.get_pos()
                     row, col = get_row_col_from_mouse(pos)
-                    game.select(row, col)
+                    if game.select(row, col):
+                        run = not check_game_over(game)
 
     pygame.quit()
 

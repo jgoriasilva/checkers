@@ -32,11 +32,14 @@ class Game():
             if not result:
                 self.selected = None
                 self.select(row, col)
+            return result
         else:
             piece = self.board.get_piece(row, col)
             if piece is not None and piece.color == self.turn:
                 self.selected = piece
                 self.board.valid_moves = self.board.get_valid_moves(piece)
+        
+        return False
 
     def __move(self, target_row, target_col):
         
